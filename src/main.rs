@@ -1,6 +1,7 @@
 #![allow(warnings)]
 mod lexer;
-
+mod parser;
+use parser::Parser;
 use lexer::Lexer;
 use std::fs;
 use std::process;
@@ -20,5 +21,9 @@ fn main() {
     process::exit(1);
     });
     let tokens = lexer.get_tokens();
-    
+    let mut parserX = Parser::new(tokens.clone());
+    let table = parserX.parse_program().unwrap_or_else(|e|{
+    eprintln!("Error: {}", e);
+    process::exit(1);
+    });
 }
