@@ -1,3 +1,4 @@
+#![allow(warnings)]
 mod lexer;
 
 use lexer::Lexer;
@@ -14,29 +15,10 @@ fn main() {
         }
     };
     let mut lexer = Lexer::new(source);
+    lexer.tokenize().unwrap_or_else(|e|{
+    eprintln!("Error: {}", e);
+    process::exit(1);
+    });
+    let tokens = lexer.get_tokens();
     
-    match lexer.tokenize() {
-        Ok(()) => {
-            // Print token stream
-            lexer.print_token_stream();
-            
-            // Print symbol table
-            lexer.get_symbol_table().print();
-            
-            // Generate and save JSON output
-            let json_output = lexer.to_json();
-            let json_filename = filename.replace(".mcpp", "_tokens.json");
-            match fs::write(&json_filename, &json_output) {
-                Ok(_) => println!("\nJSON output saved to: {}", json_filename),
-                Err(e) => eprintln!("Warning: Could not write JSON file: {}", e),
-            }
-            
-            println!("\n=== Lexical Analysis Complete ===");
-            println!("Total tokens: {}", lexer.get_tokens().len());
-        }
-        Err(e) => {
-            eprintln!("\n{}", e);
-            process::exit(1);
-        }
-    }
 }

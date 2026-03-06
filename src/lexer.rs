@@ -1,6 +1,5 @@
 use regex::Regex;
 use serde::{Deserialize, Serialize};
-
 /// Token types for MCPP language
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum TokenType {
@@ -334,11 +333,11 @@ impl Lexer {
         // Keywords (must come before identifiers)
         self.patterns.push((
             TokenType::Include,
-            Regex::new(r"\b#include\b").unwrap()
+            Regex::new(r"#include\b").unwrap()
         ));
         self.patterns.push((
             TokenType::Define,
-            Regex::new(r"\b#define\b").unwrap()
+            Regex::new(r"#define\b").unwrap()
         ));
         self.patterns.push((
             TokenType::Int,
