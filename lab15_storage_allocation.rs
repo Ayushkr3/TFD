@@ -1,0 +1,1 @@
+// Content of lab15_storage_allocation.rs
