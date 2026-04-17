@@ -1,0 +1,68 @@
+use std::io::{self, Write};
+
+fn run_optimization() {
+    println!("\n--- PHASE 5: CODE OPTIMIZATION ---\n");
+    println!("Enter statements (type 'exit' to stop)\n");
+
+    let stdin = io::stdin();
+    let mut line = String::new();
+
+    loop {
+        line.clear();
+        print!(">> ");
+        io::stdout().flush().unwrap();
+        stdin.read_line(&mut line).unwrap();
+        let line = line.trim();
+
+        if line.to_lowercase() == "exit" {
+            break;
+        }
+
+        if line.is_empty() {
+            continue;
+        }
+
+        let line = if line.ends_with(';') {
+            &line[..line.len() - 1]
+        } else {
+            line
+        };
+
+        if line.contains('=') && line.contains('+') {
+            if let Some(idx) = line.find('=') {
+                let lhs = line[..idx].trim();
+                let rhs = line[idx + 1..].trim();
+
+                let parts: Vec<&str> = rhs.split('+').collect();
+                if parts.len() == 2 {
+                    let a = parts[0].trim();
+                    let b = parts[1].trim();
+                    if a.parse::<i32>().is_ok() && b.parse::<i32>().is_ok() {
+                        let result = a.parse::<i32>().unwrap() + b.parse::<i32>().unwrap();
+                        println!("{} = {}", lhs, result);
+                        continue;
+                    }
+                }
+            }
+        }
+
+        if line.contains('=') {
+            if let Some(idx) = line.find('=') {
+                let lhs = line[..idx].trim();
+                let rhs = line[idx + 1..].trim();
+                if lhs == rhs {
+                    println!("Removed redundant assignment: {}", line);
+                    continue;
+                }
+            }
+        }
+
+        println!("{}", line);
+    }
+
+    println!("\nOptimization Finished.");
+}
+
+fn main() {
+    run_optimization();
+}

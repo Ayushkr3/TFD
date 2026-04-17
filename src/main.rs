@@ -1,6 +1,6 @@
 #![allow(warnings)]
-mod lexer;
-mod parser;
+mod lex;
+mod syntax;
 use parser::Parser;
 use lexer::Lexer;
 use std::fs;
